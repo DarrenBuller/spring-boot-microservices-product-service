@@ -1,0 +1,3 @@
+@host=product:8080
+GET http://{{host}}/api/product
+

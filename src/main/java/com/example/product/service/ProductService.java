@@ -22,22 +22,22 @@ public class ProductService {
         Product product = Product.builder()
                 .name(productRequest.name())
                 .description(productRequest.description())
+                .skuCode(productRequest.skuCode())
                 .price(productRequest.price())
                 .build();
-
         productRepository.save(product);
-        log.info("Product {} is saved", product.getId());
-        return new ProductResponse(product.getId(), product.getName(), product.getDescription(), product.getPrice());
+        log.info("Product created successfully");
+        return new ProductResponse(product.getId(), product.getName(), product.getDescription(),
+                product.getSkuCode(),
+                product.getPrice());
     }
 
     public List<ProductResponse> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-
-        return products.stream().map(this::mapToProductResponse).toList();
-    }
-
-    private ProductResponse mapToProductResponse(Product product) {
-        return new ProductResponse(product.getId(), product.getName(),
-                product.getDescription(), product.getPrice());
+        return productRepository.findAll()
+                .stream()
+                .map(product -> new ProductResponse(product.getId(), product.getName(), product.getDescription(),
+                        product.getSkuCode(),
+                        product.getPrice()))
+                .toList();
     }
 }
